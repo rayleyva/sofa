@@ -51,7 +51,7 @@ function docForm(formSelector, opts) {
     // formToDeepJSON acts on localFormDoc by reference
     formToDeepJSON(this, opts.fields, localFormDoc);
     if (opts.beforeSave) {opts.beforeSave(localFormDoc);}
-    db.saveDoc(localFormDoc, {
+    opts.app.db.saveDoc(localFormDoc, {
       success : function(resp) {
         if (opts.success) {opts.success(resp, localFormDoc);}
       }
@@ -83,7 +83,7 @@ function docForm(formSelector, opts) {
   }
   
   if (opts.id) {
-    db.openDoc(opts.id, {
+    opts.app.db.openDoc(opts.id, {
       attachPrevRev : opts.attachPrevRev,
       error: function() {
         if (opts.error) {opts.error.apply(opts, arguments);}
@@ -102,7 +102,7 @@ function docForm(formSelector, opts) {
     deleteDoc : function(opts) {
       opts = opts || {};
       if (confirm("Really delete this document?")) {                
-        db.removeDoc(localFormDoc, opts);
+        opts.app.db.removeDoc(localFormDoc, opts);
       }
     },
     localDoc : function() {
@@ -111,4 +111,8 @@ function docForm(formSelector, opts) {
     }
   };
   return instance;
+}
+
+exports.docForm = function(formSelector, opts) {
+  return docForm(formSelector, opts)
 }

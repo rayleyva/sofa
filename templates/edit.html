@@ -50,14 +50,16 @@
       $("#tagcloud").evently(tagcloud, this);
 
         var path = app.require("vendor/couchapp/lib/path").init(app.req);
+        var docForm = app.require("vendor/couchapp/lib/docform");
         var postForm, blog = app.require("lib/blog");
 
         // apply docForm at login.
         $("#account").evently({
           loggedIn : function(e,r) {
             var userCtx = r.userCtx;
-            postForm = app.docForm("form#new-post", {
+            postForm = docForm.docForm("form#new-post", {
               id : {{ docid }},
+              app : app,
               fields : ["title", "body", "tags"],
               template : {
                 type : "post",
